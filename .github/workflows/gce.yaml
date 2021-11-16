@@ -7,7 +7,8 @@ on:
 
 defaults: # default working directory for all jobs
   run:
-    working-directory: terraform/k8s/cloud_cluster/gcp
+    shell: bash
+    working-directory: k8s/cloud_cluster/gcp
 
 env:
   TERRAFORM_VERSION: 1.0.9
