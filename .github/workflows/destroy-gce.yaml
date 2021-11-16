@@ -15,7 +15,7 @@ env:
 
 jobs:
   setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+    name: Destroy GKE cluster
     runs-on: ubuntu-latest
     environment: production
 
@@ -46,5 +46,5 @@ jobs:
       run: terraform init -backend-config=secret/gcs.tfvars -reconfigure
 
     - name: Run terraform destroy
-      run: terraform destroy -auto-approve
+      run: terraform destroy -var-file=vars.tfvars -auto-approve
 
