@@ -30,7 +30,7 @@ jobs:
     
     - name: Create gcp credentials
       run: |-
-        echo ${{ secrets.SA }} > secret/sa.json
+        cat ${{ secrets.SA }} > secret/sa.json
         cat > secret/gcs.tfvars <<EOF
         credentials = "secret/sa.json"
         bucket = "${{ secrets.BUCKET }}"
