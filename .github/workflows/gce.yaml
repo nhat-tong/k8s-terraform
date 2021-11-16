@@ -30,12 +30,18 @@ jobs:
     
     - name: Create gcp credentials
       run: |-
-        cat ${{ secrets.SA }} > secret/sa.json
+        cat $sa > secret/sa.json
+        cat secret/sa.json
         cat > secret/gcs.tfvars <<EOF
         credentials = "secret/sa.json"
-        bucket = "${{ secrets.BUCKET }}"
-        prefix = "${{ secrets.PREFIX }}"
+        bucket = "$bucket"
+        prefix = "$prefix"
         EOF
+        cat secret/gcs.tfvars
+      env:
+        bucket: ${{ secrets.BUCKET }}
+        prefix: ${{ secrets.PREFIX }}
+        sa: ${{ secrets.SA }}
 
     - name: Run terraform init
       run: terraform init -backend-config=secret/gcs.tfvars -reconfigure
