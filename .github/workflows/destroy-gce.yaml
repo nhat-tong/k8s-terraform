@@ -1,6 +1,6 @@
 name: Destroy GKE cluster
 
-on:
+on: none
 
 defaults: # default working directory for all run jobs
   run:
