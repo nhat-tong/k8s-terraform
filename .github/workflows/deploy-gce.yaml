@@ -1,6 +1,9 @@
 name: Build and Deploy to GKE
 
-#on: none
+on:
+  push:
+    branches:
+      - master
 
 defaults: # default working directory for all run jobs
   run:
@@ -28,7 +31,6 @@ jobs:
     - name: Create gcp credentials
       run: |-
         echo "$sa" > secret/sa.json
-        cat secret/sa.json
         cat > secret/gcs.tfvars <<EOF
         credentials = "secret/sa.json"
         bucket = "$bucket"
