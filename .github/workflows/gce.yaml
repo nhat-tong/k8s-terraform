@@ -5,7 +5,7 @@ on:
     branches:
       - master
 
-defaults: # default working directory for all jobs
+defaults: # default working directory for all run jobs
   run:
     shell: bash
     working-directory: k8s/cloud_cluster/gcp
@@ -31,7 +31,7 @@ jobs:
     - name: Create gcp credentials
       run: |-
         cat ${{ secrets.GKE_PROJECT }} > secret/sa.json
-        cat > gcs.tfvars <<EOF
+        cat > secret/gcs.tfvars <<EOF
         credentials = "secret/sa.json"
         bucket = "${{ secrets.BUCKET }}"
         prefix = "${{ secrets.PREFIX }}"
