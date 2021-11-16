@@ -1,7 +1,7 @@
 ## Terraform init
 
 ```
-terraform init -backend-config=credentials=[SA.json] -backend-config=bucket=[BUCKET_NAME] -backend-config=prefix=[PREFIX] -reconfigure
+terraform init -backend-config=credentials=[SA.json] -backend-config=bucket=[BUCKET_NAME] -backend-config=prefix=[PREFIX] -reconfigure  
 ```
 
 or 
