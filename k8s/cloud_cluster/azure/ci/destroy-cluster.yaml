@@ -1,0 +1,54 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+  - name: TerraformVersion
+    default: 1.0.9
+  - name: WorkingDir
+    default: blog/terraform/k8s/cloud_cluster/azure
+
+steps:
+
+- checkout: self
+  path: blog # custom path to checkout, /s by default
+
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y unzip
+  displayName: Install prerequis packages
+
+- script: |
+   wget https://releases.hashicorp.com/terraform/${{ parameters. TerraformVersion}}/terraform_${{ parameters. TerraformVersion}}_linux_amd64.zip -O terraform_${{ parameters. TerraformVersion}}_linux_amd64.zip
+   unzip terraform_${{ parameters. TerraformVersion}}_linux_amd64.zip
+   chmod +x terraform
+   sudo mv terraform /usr/local/bin/
+  displayName: Install terraform
+  workingDirectory: /tmp
+
+- task: DownloadSecureFile@1
+  name: terraformsecret
+  inputs:
+    secureFile: secret.tfvars
+
+- task: DownloadSecureFile@1
+  name: sshpubkey
+  inputs:
+    secureFile: sshpubkey
+
+- script: |
+    mv $(terraformsecret.secureFilePath) secret/secret.tfvars
+    mv $(sshpubkey.secureFilePath) secret/id_rsa.pub
+  displayName: Copy credentials to working directory
+  workingDirectory: $(Agent.BuildDirectory)/${{ parameters.WorkingDir }}
+
+- script: |
+   terraform init -backend-config=secret/secret.tfvars -reconfigure
+  displayName: Run terraform init
+  workingDirectory: $(Agent.BuildDirectory)/${{ parameters.WorkingDir }}
+
+- script: |
+   terraform destroy -var-file=vars.tfvars -var-file=secret/secret.tfvars -auto-approve
+  displayName: Run terraform destroy
+  workingDirectory: $(Agent.BuildDirectory)/${{ parameters.WorkingDir }}

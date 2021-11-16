@@ -1,0 +1,47 @@
+{
+    "name": "K8s Contributor",
+    "roleName": "K8s Contributor",
+    "roleType": "CustomRole",
+    "assignableScopes": [
+        "/subscriptions/[YOUR_SUBSCRIPTION_ID]"
+      ],
+    "description": "Can manage k8s cluster",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/write",
+          "Microsoft.Resources/subscriptions/resourceGroups/delete",
+          "Microsoft.Resources/subscriptions/resourceGroups/resources/*",
+          "Microsoft.Authorization/*/read",
+          "Microsoft.Compute/*/read",
+          "Microsoft.Compute/availabilitySets/*",
+          "Microsoft.Compute/proximityPlacementGroups/*",
+          "Microsoft.Compute/virtualMachines/*",
+          "Microsoft.Compute/disks/*",
+          "Microsoft.Network/*/read",
+          "Microsoft.Network/networkInterfaces/*",
+          "Microsoft.Network/virtualNetworks/read",
+          "Microsoft.Network/virtualNetworks/subnets/read",
+          "Microsoft.Network/virtualNetworks/subnets/join/action",
+          "Microsoft.Network/virtualNetworks/subnets/joinViaServiceEndpoint/action",
+          "Microsoft.Network/networkSecurityGroups/join/action",
+          "Microsoft.Resources/deployments/*",
+          "Microsoft.Insights/alertRules/*",
+          "Microsoft.Storage/*/read",
+          "Microsoft.Storage/storageAccounts/*",
+          "Microsoft.ContainerService/managedClusters/listClusterUserCredential/action",
+          "Microsoft.ContainerService/managedClusters/*"
+        ],
+        "notActions": [],
+        "dataActions": [
+          "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/delete",
+          "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read",
+          "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write"
+        ],
+        "notDataActions": []
+      }
+    ]
+  }
