@@ -30,7 +30,7 @@ jobs:
     
     - name: Create gcp credentials
       run: |-
-        cat $sa > secret/sa.json
+        cat "$sa" > secret/sa.json
         cat secret/sa.json
         cat > secret/gcs.tfvars <<EOF
         credentials = "secret/sa.json"
