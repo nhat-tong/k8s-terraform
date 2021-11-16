@@ -21,6 +21,8 @@ terraform {
       subscription_id = var.subscription_id
   }
 
+  required_version = "~> 1.0.9"
+
   required_providers {
     azurerm = {
       version = "~> 2.84.0"

@@ -1,0 +1,43 @@
+name: Build and Deploy to GKE
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  TERRAFORM_VERSION: 1.0.9
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+    
+    - name: Create gcp credentials
+      run: |-
+        cat ${{ secrets.GKE_PROJECT }} > secret/sa.json
+        cat > gcs.tfvars <<EOF
+        credentials = "secret/sa.json"
+        bucket = "${{ secrets.BUCKET }}"
+        prefix = "${{ secrets.PREFIX }}"
+        EOF
+
+    - name: Run terraform init
+      run: terraform init -backend-config=secret/gcs.tfvars -reconfigure
+
+    - name: Run terraform plan
+      run: terraform plan -var-file=vars.tfvars -out=secret/tfplan
+
+    - name: Run terraform apply
+      run: terraform apply secret/tfplan
+
