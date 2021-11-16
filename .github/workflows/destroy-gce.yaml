@@ -1,9 +1,6 @@
-name: Build and Deploy to GKE
+name: Destroy GKE cluster
 
 on:
-  push:
-    branches:
-      - master
 
 defaults: # default working directory for all run jobs
   run:
@@ -30,7 +27,7 @@ jobs:
     
     - name: Create gcp credentials
       run: |-
-        echo "$sa" > secret/sa.json
+        echo $sa > secret/sa.json
         cat secret/sa.json
         cat > secret/gcs.tfvars <<EOF
         credentials = "secret/sa.json"
@@ -46,9 +43,6 @@ jobs:
     - name: Run terraform init
       run: terraform init -backend-config=secret/gcs.tfvars -reconfigure
 
-    - name: Run terraform plan
-      run: terraform plan -var-file=vars.tfvars -out=secret/tfplan
-
-    - name: Run terraform apply
-      run: terraform apply secret/tfplan
+    - name: Run terraform destroy
+      run: terraform destroy -auto-approve
 
