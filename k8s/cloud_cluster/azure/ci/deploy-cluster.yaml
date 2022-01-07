@@ -10,7 +10,7 @@ parameters:
     default: blog/terraform/k8s/cloud_cluster/azure
 
 variables:
-- terraform
+- group: terraform
 
 steps:
 
