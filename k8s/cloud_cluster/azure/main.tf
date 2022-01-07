@@ -10,14 +10,14 @@ resource "azurerm_kubernetes_cluster" "default" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = "${random_pet.prefix.id}-k8s"
-  kubernetes_version = "1.21.1"
+  kubernetes_version = var.aks_version
 
 
   default_node_pool {
     name            = "default"
-    node_count      = 3
-    vm_size         = "Standard_B2s"
-    os_disk_size_gb = 30
+    node_count      = var.node_count
+    vm_size         = var.node_vm_size
+    os_disk_size_gb = var.node_os_disk
   }
 
   identity {

@@ -9,6 +9,9 @@ parameters:
   - name: WorkingDir
     default: blog/terraform/k8s/cloud_cluster/azure
 
+variables:
+- terraform
+
 steps:
 
 - checkout: self
@@ -41,6 +44,12 @@ steps:
     mv $(terraformsecret.secureFilePath) secret/secret.tfvars
     mv $(sshpubkey.secureFilePath) secret/id_rsa.pub
   displayName: Copy credentials to working directory
+  workingDirectory: $(Agent.BuildDirectory)/${{ parameters.WorkingDir }}
+
+- script: |
+    sed -i "s/#{YOUR_RG_FOR_TERRAFORM_BACKEND}#/$(resource_group_name)/g" provider.tf
+    sed -i "s/#{YOUR_STORAGE_ACCOUNT_NAME}#$(storage_account_name)/g" provider.tf
+  displayName: replace terraform backend values
   workingDirectory: $(Agent.BuildDirectory)/${{ parameters.WorkingDir }}
 
 - script: |
